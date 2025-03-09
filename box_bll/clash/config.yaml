@@ -3,6 +3,7 @@ mixed-port: 7890
 redir-port: 7891
 tproxy-port: 1536
 mode: Rule
+ipv6: true # false 此为不代理ipv6流量节点
 allow-lan: true
 geo-auto-update: true
 geo-update-interval: 24
@@ -177,23 +178,13 @@ proxy-groups:
       - 🌎 全球直连
 # —————————
 
-  - name: ♻️ 延迟最低
-    type: url-test
-    <<: *A
-
-  - name: ♻️ 故障转移
-    type: fallback
-    <<: *A
-
-  - name: ♻️ 负载均衡
-    type: load-balance
-    strategy: round-robin
-    <<: *A
-
-  - name: 🌐 DNS解析
+  - name: 📲 电报信息
     <<: *proxy_groups
 
-  - name: 📲 电报信息
+  - name: Ⓜ️ 微软服务
+    <<: *proxy_groups
+
+  - name: 🍎 苹果服务
     <<: *proxy_groups
 
   - name: 🤖 OpenAI
@@ -220,12 +211,6 @@ proxy-groups:
   - name: 📢 谷歌服务
     <<: *proxy_groups
 
-  - name: Ⓜ️ 微软服务
-    <<: *proxy_groups
-
-  - name: 🍎 苹果服务
-    <<: *proxy_groups
-
   - name: 🛑 广告拦截
     type: select
     proxies:
@@ -236,6 +221,22 @@ proxy-groups:
 
   - name: 🐋 漏网之鱼
     <<: *proxy_groups
+
+  - name: 🌐 DNS解析
+    <<: *proxy_groups
+
+  - name: ♻️ 延迟最低
+    type: url-test
+    <<: *A
+
+  - name: ♻️ 故障转移
+    type: fallback
+    <<: *A
+
+  - name: ♻️ 负载均衡
+    type: load-balance
+    strategy: round-robin
+    <<: *A
 
   - name: 🇭🇰 香港节点
     filter: "^(?=.*(港|HK|hk|Hong Kong|HongKong|hongkong)).*$"
